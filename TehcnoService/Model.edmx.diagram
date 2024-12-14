@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="5bece2eb45424436a5fbad66dd1b565a" Name="Diagram1">
+        <EntityTypeShape EntityType="TehcnoServiceModel.Equipment" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TehcnoServiceModel.Executors" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TehcnoServiceModel.RepairRequests" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TehcnoServiceModel.RequestAssignments" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="TehcnoServiceModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TehcnoServiceModel.Users" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <AssociationConnector Association="TehcnoServiceModel.FK__RepairReq__Equip__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="TehcnoServiceModel.FK__RepairReq__Execu__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="TehcnoServiceModel.FK__RequestAs__Execu__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="TehcnoServiceModel.FK__RepairReq__UserI__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="TehcnoServiceModel.FK__RequestAs__Reque__47DBAE45" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

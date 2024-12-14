@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TehcnoServiceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="EquipmentID" />
+          </Key>
+          <Property Name="EquipmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EquipmentType" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Executors">
+          <Key>
+            <PropertyRef Name="ExecutorID" />
+          </Key>
+          <Property Name="ExecutorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RepairRequests">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="EquipmentID" Type="int" Nullable="false" />
+          <Property Name="ExecutorID" Type="int" />
+          <Property Name="ProblemDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegistrationDate" Type="datetime2" Precision="7" />
+          <Property Name="CompletionDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="RequestAssignments">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestID" Type="int" Nullable="false" />
+          <Property Name="ExecutorID" Type="int" Nullable="false" />
+          <Property Name="AssignmentDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ContactInfo" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK__RepairReq__Equip__4316F928">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="EquipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__Execu__440B1D61">
+          <End Role="Executors" Type="Self.Executors" Multiplicity="0..1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executors">
+              <PropertyRef Name="ExecutorID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="ExecutorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__UserI__4222D4EF">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RequestAs__Execu__48CFD27E">
+          <End Role="Executors" Type="Self.Executors" Multiplicity="1" />
+          <End Role="RequestAssignments" Type="Self.RequestAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executors">
+              <PropertyRef Name="ExecutorID" />
+            </Principal>
+            <Dependent Role="RequestAssignments">
+              <PropertyRef Name="ExecutorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RequestAs__Reque__47DBAE45">
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="1" />
+          <End Role="RequestAssignments" Type="Self.RequestAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequests">
+              <PropertyRef Name="RequestID" />
+            </Principal>
+            <Dependent Role="RequestAssignments">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TehcnoServiceModelContainer">
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Executors" EntityType="Self.Executors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepairRequests" EntityType="Self.RepairRequests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestAssignments" EntityType="Self.RequestAssignments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__RepairReq__Equip__4316F928" Association="Self.FK__RepairReq__Equip__4316F928">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__Execu__440B1D61" Association="Self.FK__RepairReq__Execu__440B1D61">
+            <End Role="Executors" EntitySet="Executors" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__UserI__4222D4EF" Association="Self.FK__RepairReq__UserI__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RequestAs__Execu__48CFD27E" Association="Self.FK__RequestAs__Execu__48CFD27E">
+            <End Role="Executors" EntitySet="Executors" />
+            <End Role="RequestAssignments" EntitySet="RequestAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RequestAs__Reque__47DBAE45" Association="Self.FK__RequestAs__Reque__47DBAE45">
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+            <End Role="RequestAssignments" EntitySet="RequestAssignments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TehcnoServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="EquipmentID" />
+          </Key>
+          <Property Name="EquipmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SerialNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EquipmentType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RepairRequests" Relationship="Self.FK__RepairReq__Equip__4316F928" FromRole="Equipment" ToRole="RepairRequests" />
+        </EntityType>
+        <EntityType Name="Executors">
+          <Key>
+            <PropertyRef Name="ExecutorID" />
+          </Key>
+          <Property Name="ExecutorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="RepairRequests" Relationship="Self.FK__RepairReq__Execu__440B1D61" FromRole="Executors" ToRole="RepairRequests" />
+          <NavigationProperty Name="RequestAssignments" Relationship="Self.FK__RequestAs__Execu__48CFD27E" FromRole="Executors" ToRole="RequestAssignments" />
+        </EntityType>
+        <EntityType Name="RepairRequests">
+          <Key>
+            <PropertyRef Name="RequestID" />
+          </Key>
+          <Property Name="RequestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="EquipmentID" Type="Int32" Nullable="false" />
+          <Property Name="ExecutorID" Type="Int32" />
+          <Property Name="ProblemDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegistrationDate" Type="DateTime" Precision="7" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Equipment" Relationship="Self.FK__RepairReq__Equip__4316F928" FromRole="RepairRequests" ToRole="Equipment" />
+          <NavigationProperty Name="Executors" Relationship="Self.FK__RepairReq__Execu__440B1D61" FromRole="RepairRequests" ToRole="Executors" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__RepairReq__UserI__4222D4EF" FromRole="RepairRequests" ToRole="Users" />
+          <NavigationProperty Name="RequestAssignments" Relationship="Self.FK__RequestAs__Reque__47DBAE45" FromRole="RepairRequests" ToRole="RequestAssignments" />
+        </EntityType>
+        <EntityType Name="RequestAssignments">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestID" Type="Int32" Nullable="false" />
+          <Property Name="ExecutorID" Type="Int32" Nullable="false" />
+          <Property Name="AssignmentDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Executors" Relationship="Self.FK__RequestAs__Execu__48CFD27E" FromRole="RequestAssignments" ToRole="Executors" />
+          <NavigationProperty Name="RepairRequests" Relationship="Self.FK__RequestAs__Reque__47DBAE45" FromRole="RequestAssignments" ToRole="RepairRequests" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContactInfo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RepairRequests" Relationship="Self.FK__RepairReq__UserI__4222D4EF" FromRole="Users" ToRole="RepairRequests" />
+        </EntityType>
+        <Association Name="FK__RepairReq__Equip__4316F928">
+          <End Role="Equipment" Type="Self.Equipment" Multiplicity="1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="EquipmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__Execu__440B1D61">
+          <End Role="Executors" Type="Self.Executors" Multiplicity="0..1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executors">
+              <PropertyRef Name="ExecutorID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="ExecutorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RequestAs__Execu__48CFD27E">
+          <End Role="Executors" Type="Self.Executors" Multiplicity="1" />
+          <End Role="RequestAssignments" Type="Self.RequestAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Executors">
+              <PropertyRef Name="ExecutorID" />
+            </Principal>
+            <Dependent Role="RequestAssignments">
+              <PropertyRef Name="ExecutorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RepairReq__UserI__4222D4EF">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="RepairRequests">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__RequestAs__Reque__47DBAE45">
+          <End Role="RepairRequests" Type="Self.RepairRequests" Multiplicity="1" />
+          <End Role="RequestAssignments" Type="Self.RequestAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RepairRequests">
+              <PropertyRef Name="RequestID" />
+            </Principal>
+            <Dependent Role="RequestAssignments">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Equipment" EntityType="Self.Equipment" />
+          <EntitySet Name="Executors" EntityType="Self.Executors" />
+          <EntitySet Name="RepairRequests" EntityType="Self.RepairRequests" />
+          <EntitySet Name="RequestAssignments" EntityType="Self.RequestAssignments" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK__RepairReq__Equip__4316F928" Association="Self.FK__RepairReq__Equip__4316F928">
+            <End Role="Equipment" EntitySet="Equipment" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__Execu__440B1D61" Association="Self.FK__RepairReq__Execu__440B1D61">
+            <End Role="Executors" EntitySet="Executors" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RequestAs__Execu__48CFD27E" Association="Self.FK__RequestAs__Execu__48CFD27E">
+            <End Role="Executors" EntitySet="Executors" />
+            <End Role="RequestAssignments" EntitySet="RequestAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RepairReq__UserI__4222D4EF" Association="Self.FK__RepairReq__UserI__4222D4EF">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__RequestAs__Reque__47DBAE45" Association="Self.FK__RequestAs__Reque__47DBAE45">
+            <End Role="RepairRequests" EntitySet="RepairRequests" />
+            <End Role="RequestAssignments" EntitySet="RequestAssignments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TehcnoServiceModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Equipment">
+            <EntityTypeMapping TypeName="TehcnoServiceModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="EquipmentType" ColumnName="EquipmentType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Executors">
+            <EntityTypeMapping TypeName="TehcnoServiceModel.Executors">
+              <MappingFragment StoreEntitySet="Executors">
+                <ScalarProperty Name="ExecutorID" ColumnName="ExecutorID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepairRequests">
+            <EntityTypeMapping TypeName="TehcnoServiceModel.RepairRequests">
+              <MappingFragment StoreEntitySet="RepairRequests">
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="EquipmentID" ColumnName="EquipmentID" />
+                <ScalarProperty Name="ExecutorID" ColumnName="ExecutorID" />
+                <ScalarProperty Name="ProblemDescription" ColumnName="ProblemDescription" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestAssignments">
+            <EntityTypeMapping TypeName="TehcnoServiceModel.RequestAssignments">
+              <MappingFragment StoreEntitySet="RequestAssignments">
+                <ScalarProperty Name="AssignmentID" ColumnName="AssignmentID" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="ExecutorID" ColumnName="ExecutorID" />
+                <ScalarProperty Name="AssignmentDate" ColumnName="AssignmentDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TehcnoServiceModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="TehcnoServiceModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="ContactInfo" ColumnName="ContactInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
